@@ -1,0 +1,257 @@
+html<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dự Án CSS Gộp - Khóa Học Web</title>
+    
+    <style>
+        /* ==========================================================================
+           1. Quy tắc chung & Hộp mô hình (Box Model)
+           ========================================================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box; /* Tính toán kích thước hộp chính xác */
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #222222; /* Độ tương phản cao cho tính tiếp cận */
+            background-color: #f9f9f9;
+        }
+
+        /* Liên kết bỏ qua nội dung (Skip to main content) */
+        .skip-link {
+            position: absolute;
+            top: -100px; /* Ẩn khỏi màn hình khi bình thường */
+            left: 10px;
+            background: #0056b3;
+            color: white;
+            padding: 10px 20px;
+            z-index: 100;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 4px;
+        }
+
+        .skip-link:focus {
+            top: 10px; /* Hiển thị khi người dùng nhấn phím Tab */
+            outline: 3px solid #ffcc00;
+        }
+
+        /* ==========================================================================
+           2. Bố cục Flexbox (Thanh điều hướng - Navigation)
+           ========================================================================== */
+        header {
+            background-color: #333333;
+            padding: 15px 20px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            justify-content: center; /* Căn giữa menu */
+            gap: 20px; /* Khoảng cách các mục */
+        }
+
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 8px 16px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .nav-links a:focus, .nav-links a:hover {
+            background-color: #555555;
+            outline: 2px solid #ffcc00; /* Nhấn mạnh khi Tab/Hover */
+        }
+
+        /* ==========================================================================
+           3. Cơ chế chuyển trang tự động bằng CSS (:target)
+           ========================================================================== */
+        /* Mặc định ẩn trang Giới thiệu và Dịch vụ, chỉ hiện Trang chủ */
+        #about, #services {
+            display: none;
+        }
+        #home {
+            display: grid;
+        }
+
+        /* Khi bấm vào menu, kích hoạt trang tương ứng và ẩn các trang khác */
+        #home:target { display: grid; }
+        #home:target ~ #about, #home:target ~ #services { display: none; }
+
+        #about:target { display: grid; }
+        #about:target ~ #services { display: none; }
+        /* Kỹ thuật CSS để ẩn trang chủ khi trang khác được chọn */
+        body:has(#about:target) #home { display: none; }
+        body:has(#services:target) #home { display: none; }
+
+        #services:target { display: grid; }
+
+        /* ==========================================================================
+           4. Bố cục CSS Grid (Cấu trúc vùng nội dung)
+           ========================================================================== */
+        .page-layout {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            /* Thiết lập lưới: Cột nội dung chính chiếm 2 phần, cột phụ bên chiếm 1 phần */
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        /* Tương thích thiết bị di động (Responsive) */
+        @media (max-width: 768px) {
+            .page-layout {
+                grid-template-columns: 1fr; /* Chuyển về 1 cột trên điện thoại */
+            }
+        }
+
+        /* ==========================================================================
+           5. Kiểu dáng cấu phần & Mô hình hộp (Padding/Margin/Border)
+           ========================================================================== */
+        main {
+            background-color: #ffffff;
+            padding: 30px;
+            border: 1px solid #dddddd;
+            border-radius: 8px;
+        }
+
+        h1, h2 {
+            margin-bottom: 20px;
+            color: #111111;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            margin: 15px 0 20px 30px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        /* Tạo kiểu dáng cho hình ảnh */
+        .feature-image {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+            border: 4px solid #eeeeee;
+            border-radius: 4px;
+        }
+
+        /* Thanh bên bên phải (Sidebar) */
+        aside {
+            background-color: #e9ecef;
+            padding: 20px;
+            border: 1px solid #cccccc;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #333333;
+            color: #ffffff;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Liên kết bỏ qua nội dung chuẩn tiếp cận -->
+    <a href="#main-content-anchor" class="skip-link">Chuyển đến nội dung chính</a>
+
+    <header>
+        <nav aria-label="Menu chính">
+            <ul class="nav-links">
+                <li><a href="#home">Trang Chủ</a></li>
+                <li><a href="#about">Giới Thiệu</a></li>
+                <li><a href="#services">Dịch Vụ</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- VÙNG NỘI DUNG 1: TRANG CHỦ -->
+    <div id="home" class="page-layout">
+        <main id="main-content-anchor">
+            <h1>Chào mừng đến với Trang Chủ</h1>
+            <p>Đây là dự án cuối khóa học xây dựng ứng dụng web, tập trung vào khả năng áp dụng cấu trúc HTML ngữ nghĩa kết hợp hệ thống lưới CSS Grid và Flexbox linh hoạt.</p>
+            
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcmd1eTX4_Tm0g79CC5hZGI2TNYzfY0HjalMnykgGwr4rvLiRSZKHWmxQH&s=10" alt="Bàn làm việc hiện đại với máy tính và sổ ghi chép" class="feature-image">
+            
+            <h2>Kỹ năng đạt được trong khóa học:</h2>
+            <ul>
+                <li>Sử dụng thuộc tính định vị nâng cao (Relative, Absolute, Sticky).</li>
+                <li>Thiết kế cấu trúc giao diện cân đối với CSS Box Model.</li>
+                <li>Tối ưu hóa khả năng tiếp cận cho người khuyết tật dùng bàn phím.</li>
+            </ul>
+        </main>
+        <aside>
+            <h2>Thông tin nhanh</h2>
+            <p>Hệ thống CSS Grid giúp chia bố cục trang này thành hai phần: Vùng nội dung lớn bên trái và Thanh bên bổ sung thông tin này ở bên phải.</p>
+        </aside>
+    </div>
+
+    <!-- VÙNG NỘI DUNG 2: TRANG GIỚI THIỆU -->
+    <div id="about" class="page-layout">
+        <main>
+            <h1>Về chúng tôi</h1>
+            <p>Chúng tôi xây dựng các trang web không chỉ đẹp về mặt thẩm mỹ mà còn phải đáp ứng đầy đủ tính năng thực tế, dễ tiếp cận với mọi đối tượng người dùng.</p>
+            
+            <img src="https://png.pngtree.com/thumb_back/fw800/background/20230123/pngtree-image-of-a-triumphant-startup-team-engaging-in-brainstorming-session-for-a-crucial-project-during-an-office-meeting-photo-image_49240440.jpg" alt="Nhóm lập trình viên đang cùng thảo luận dự án trước bảng trắng" class="feature-image">
+            
+            <h2>Giá trị cốt lõi của lập trình Web:</h2>
+            <ol>
+                <li>Mã nguồn sạch và hợp lệ cấu trúc ngữ nghĩa HTML5.</li>
+                <li>Giao diện tương thích mượt mà trên mọi thiết bị di động.</li>
+                <li>Độ tương phản màu sắc đạt chuẩn WCAG.</li>
+            </ol>
+        </main>
+        <aside>
+            <h2>Liên hệ nhanh</h2>
+            <p>Nếu bạn có bất kỳ câu hỏi nào về tiêu chuẩn tiếp cận Web WAVE, hãy gửi phản hồi cho chúng tôi.</p>
+        </aside>
+    </div>
+
+    <!-- VÙNG NỘI DUNG 3: TRANG DỊCH VỤ -->
+    <div id="services" class="page-layout">
+        <main>
+            <h1>Dịch vụ chúng tôi cung cấp</h1>
+            <p>Dưới đây là các giải pháp công nghệ toàn diện giúp doanh nghiệp của bạn tối ưu hóa sự hiện diện trên không gian số một cách chuyên nghiệp.</p>
+            
+            <img src="https://png.pngtree.com/png-clipart/20250206/original/pngtree-analytics-chart-3d-icon-isolated-on-a-transparent-background-symbolizing-data-png-image_20363844.png" alt="Biểu đồ phân tích dữ liệu hiển thị trên màn hình máy tính bảng" class="feature-image">
+            
+            <h2>Các danh mục giải pháp chính:</h2>
+            <ul>
+                <li>Thiết kế giao diện UI/UX tùy biến.</li>
+                <li>Tối ưu hiệu năng tải trang và chuẩn SEO cơ bản.</li>
+                <li>Kiểm tra và sửa lỗi khả năng tiếp cận (Accessibility Audit).</li>
+            </ul>
+        </main>
+        <aside>
+            <h2>Tại sao chọn chúng tôi?</h2>
+            <p>Mọi dòng mã CSS đều được tối ưu hóa dung lượng, sử dụng mô hình Flexbox hiện đại giúp giao diện không bị vỡ bố cục.</p>
+        </aside>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Dự án cuối khóa CSS. Đã tối ưu hóa khả năng tiếp cận và gộp mã nguồn thành công.</p>
+    </footer>
+
+</body>
+</html>
